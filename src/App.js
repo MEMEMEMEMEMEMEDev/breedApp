@@ -13,11 +13,11 @@ import {
   Box,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
 import { useFetch } from "./hook/useFetch";
 
 export default function App() {
-  const url = "https://api.TheDogAPI.com/v1/breeds";
-  const { data, loading } = useFetch(url);
+  const { data, loading } = useFetch("https://api.TheDogAPI.com/v1/breeds");
   const [breeds, setBreeds] = useState([]);
   const [selectedBreeds, setSelectedBreeds] = useState(null);
 
@@ -28,20 +28,35 @@ export default function App() {
   }, [data]);
 
   return (
-    <div className="app">
+    <Container maxWidth="md">
       {loading ? (
-        <div>Loading...</div>
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            maxWidth: "100vw",
+          }}
+        >
+          <ClipLoader size={50} color={"gray"} loading={loading} />
+        </Box>
       ) : (
-        <Container maxWidth="md">
+        <>
           <CssBaseline />
           <Box mt={2} textAlign={"center"}>
             <AppBar
               position="static"
               style={{
-                backgroundColor: "gray",
+                backgroundColor: "lightblue",
+                width: "70%",
+                margin: "0 auto",
+                borderRadius: "10px",
+                color: "whitesmoke",
+                padding: "1%",
               }}
             >
-              <Typography variant="h6">
+              <Typography variant="h6" fontSize={20}>
                 <span role="img" aria-label="dog">
                   🐶
                 </span>
@@ -61,13 +76,14 @@ export default function App() {
             >
               <Autocomplete
                 multiple
-                id="demo-mutiple-chip"
                 options={breeds}
                 getOptionLabel={(option) => option.name}
                 onChange={(event, value) => {
                   setSelectedBreeds(value);
                 }}
-                style={{ width: 700 }}
+                style={{
+                  width: "60%",
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -109,8 +125,8 @@ export default function App() {
                 ))}
             </Grid>
           </Box>
-        </Container>
+        </>
       )}
-    </div>
+    </Container>
   );
 }
